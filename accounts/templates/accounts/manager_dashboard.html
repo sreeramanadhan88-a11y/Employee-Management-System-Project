@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manager Dashboard</title>
+</head>
+<body>
+
+    <h1>Employee Management System</h1>
+
+    <h2>Manager Dashboard</h2>
+
+    <p>
+        Welcome, {{ request.user.username }}
+    </p>
+
+    <h3>My Team</h3>
+
+    {% for employee in team_members %}
+
+        <div>
+
+            <p>
+                Employee ID: {{ employee.employee_id }}
+                <br>
+                Name: {{ employee.get_full_name }}
+                <br>
+                Username: {{ employee.username }}
+                <br>
+                Role: {{ employee.role }}
+                <br>
+                Department: {{ employee.department|default:"Not Assigned" }}
+            </p>
+
+        </div>
+
+    {% empty %}
+
+        <p>No staff members assigned to you.</p>
+
+    {% endfor %}
+
+    <br>
+    <a href="{% url 'my_profile' %}">
+    <button>My Profile</button>
+</a>
+<a href="{% url 'manager_leave_requests' %}">
+    <button>Leave Requests</button>
+</a>
+
+
+<a href="{% url 'team_daily_reports' %}">
+    <button>Team Daily Reports</button>
+</a>
+
+    <a href="{% url 'logout' %}">
+        Logout
+    </a>
+
+</body>
+</html>

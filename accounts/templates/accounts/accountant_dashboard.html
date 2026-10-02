@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Accountant Dashboard</title>
+</head>
+<body>
+
+    <h1>Employee Management System</h1>
+
+    <h2>Accountant Dashboard</h2>
+
+    <p>
+        Welcome,
+        {{ request.user.get_full_name|default:request.user.username }}
+    </p>
+
+    <h3>My Information</h3>
+
+    <p>
+        Employee ID:
+        {{ request.user.employee_id }}
+    </p>
+
+    <p>
+        Department:
+        {{ request.user.department|default:"Not Assigned" }}
+    </p>
+
+    <p>
+        Role:
+        {{ request.user.get_role_display }}
+    </p>
+
+    <hr>
+
+    <h3>Accountant Features</h3>
+
+    <ul>
+        <li>Salary Management</li>
+        <li>Payment Records</li>
+        <li>Bank Statements</li>
+        <li>Accounting Management</li>
+        <li>Financial Statistics</li>
+        <li>Notifications</li>
+        <li>Insurance</li>
+    </ul>
+
+    <br>
+    <a href="{% url 'my_profile' %}">
+    <button>My Profile</button>
+</a>
+
+    <a href="{% url 'logout' %}">
+        Logout
+    </a>
+
+</body>
+</html>

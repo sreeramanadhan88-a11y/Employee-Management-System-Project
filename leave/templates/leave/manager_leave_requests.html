@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leave Requests</title>
+</head>
+<body>
+
+    <h1>Manager Leave Requests</h1>
+
+    <p>
+        Review leave requests from your team.
+    </p>
+
+    {% for leave in leave_requests %}
+
+        <div>
+
+            <p>
+                <strong>Employee:</strong>
+                {{ leave.employee.get_full_name|default:leave.employee.username }}
+            </p>
+
+            <p>
+                <strong>Employee ID:</strong>
+                {{ leave.employee.employee_id }}
+            </p>
+
+            <p>
+                <strong>Leave Type:</strong>
+                {{ leave.leave_type }}
+            </p>
+
+            <p>
+                <strong>From:</strong>
+                {{ leave.from_date }}
+            </p>
+
+            <p>
+                <strong>To:</strong>
+                {{ leave.to_date }}
+            </p>
+
+            <p>
+                <strong>Reason:</strong>
+                {{ leave.reason }}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                {{ leave.get_status_display }}
+            </p>
+
+            {% if leave.status == 'PENDING' %}
+
+                <a href="{% url 'approve_leave' leave.id %}">
+                    <button>Approve</button>
+                </a>
+
+                <a href="{% url 'reject_leave' leave.id %}">
+                    <button>Reject</button>
+                </a>
+
+            {% endif %}
+
+            <hr>
+
+        </div>
+
+    {% empty %}
+
+        <p>
+            No leave requests from your team.
+        </p>
+
+    {% endfor %}
+
+    <br>
+
+    <a href="{% url 'manager_dashboard' %}">
+        Back to Manager Dashboard
+    </a>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Profile</title>
+</head>
+<body>
+
+    <h1>My Profile</h1>
+
+    {% if request.user.profile_image %}
+        <img
+            src="{{ request.user.profile_image.url }}"
+            width="120"
+            height="120"
+            alt="Profile Image"
+        >
+    {% endif %}
+
+    <p>
+        <strong>Employee ID:</strong>
+        {{ request.user.employee_id }}
+    </p>
+
+    <p>
+        <strong>Role:</strong>
+        {{ request.user.get_role_display }}
+    </p>
+
+    <p>
+        <strong>Department:</strong>
+        {{ request.user.department|default:"Not Assigned" }}
+    </p>
+
+    <p>
+        <strong>Manager:</strong>
+        {{ request.user.manager|default:"Not Assigned" }}
+    </p>
+
+    <hr>
+
+    <h2>Update Profile</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            Update Profile
+        </button>
+
+    </form>
+
+    <br>
+
+    {% if request.user.role == 'MANAGER' %}
+        <a href="{% url 'manager_dashboard' %}">
+            Back to Dashboard
+        </a>
+
+    {% elif request.user.role == 'STAFF' %}
+        <a href="{% url 'staff_dashboard' %}">
+            Back to Dashboard
+        </a>
+
+    {% elif request.user.role == 'ACCOUNTANT' %}
+        <a href="{% url 'accountant_dashboard' %}">
+            Back to Dashboard
+        </a>
+    {% endif %}
+
+</body>
+</html>

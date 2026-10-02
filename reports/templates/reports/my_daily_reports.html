@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Daily Reports</title>
+</head>
+<body>
+
+    <h1>My Daily Reports</h1>
+
+    {% for report in reports %}
+
+        <div>
+
+            <p>
+                <strong>Date:</strong>
+                {{ report.report_date }}
+            </p>
+
+            <p>
+                <strong>Work Title:</strong>
+                {{ report.work_title }}
+            </p>
+
+            <p>
+                <strong>Description:</strong>
+                {{ report.work_description }}
+            </p>
+
+            <p>
+                <strong>Submitted:</strong>
+                {{ report.created_at }}
+            </p>
+
+            <hr>
+
+        </div>
+
+    {% empty %}
+
+        <p>
+            You have not submitted any daily reports.
+        </p>
+
+    {% endfor %}
+
+    <br>
+
+    <a href="{% url 'submit_daily_report' %}">
+        <button>Submit New Report</button>
+    </a>
+
+    <br><br>
+
+    <a href="{% url 'staff_dashboard' %}">
+        Back to Staff Dashboard
+    </a>
+
+</body>
+</html>

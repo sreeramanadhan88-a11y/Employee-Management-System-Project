@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Team Daily Reports</title>
+</head>
+<body>
+
+    <h1>Team Daily Reports</h1>
+
+    <p>
+        Daily reports submitted by your team members.
+    </p>
+
+    {% for report in reports %}
+
+        <div>
+
+            <p>
+                <strong>Employee:</strong>
+                {{ report.employee.get_full_name|default:report.employee.username }}
+            </p>
+
+            <p>
+                <strong>Employee ID:</strong>
+                {{ report.employee.employee_id }}
+            </p>
+
+            <p>
+                <strong>Report Date:</strong>
+                {{ report.report_date }}
+            </p>
+
+            <p>
+                <strong>Work Title:</strong>
+                {{ report.work_title }}
+            </p>
+
+            <p>
+                <strong>Description:</strong>
+                {{ report.work_description }}
+            </p>
+
+            <p>
+                <strong>Submitted At:</strong>
+                {{ report.created_at }}
+            </p>
+
+            <hr>
+
+        </div>
+
+    {% empty %}
+
+        <p>
+            No daily reports have been submitted by your team.
+        </p>
+
+    {% endfor %}
+
+    <br>
+
+    <a href="{% url 'manager_dashboard' %}">
+        <button>Back to Manager Dashboard</button>
+    </a>
+
+</body>
+</html>

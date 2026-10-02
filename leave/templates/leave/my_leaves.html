@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Leave Requests</title>
+</head>
+<body>
+
+    <h1>My Leave Requests</h1>
+
+    {% for leave in leaves %}
+
+        <div>
+
+            <p>
+                <strong>Leave Type:</strong>
+                {{ leave.leave_type }}
+            </p>
+
+            <p>
+                <strong>From:</strong>
+                {{ leave.from_date }}
+            </p>
+
+            <p>
+                <strong>To:</strong>
+                {{ leave.to_date }}
+            </p>
+
+            <p>
+                <strong>Reason:</strong>
+                {{ leave.reason }}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                {{ leave.get_status_display }}
+            </p>
+
+            <hr>
+
+        </div>
+
+    {% empty %}
+
+        <p>You have not submitted any leave requests.</p>
+
+    {% endfor %}
+
+    <br>
+
+    <a href="{% url 'apply_leave' %}">
+        Apply for New Leave
+    </a>
+
+    <br><br>
+
+    <a href="{% url 'staff_dashboard' %}">
+        Back to Dashboard
+    </a>
+
+</body>
+</html>
