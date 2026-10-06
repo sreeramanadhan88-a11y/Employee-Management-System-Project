@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bank Statements</title>
+</head>
+<body>
+
+    <h1>Employee Management System</h1>
+
+    <h2>Bank Statements</h2>
+
+    <a href="{% url 'add_bank_statement' %}">
+        <button>Add Bank Transaction</button>
+    </a>
+
+    <br><br>
+
+    {% for statement in statements %}
+
+        <div>
+
+            <p>
+                <strong>Date:</strong>
+                {{ statement.transaction_date }}
+            </p>
+
+            <p>
+                <strong>Reference:</strong>
+                {{ statement.transaction_reference }}
+            </p>
+
+            <p>
+                <strong>Description:</strong>
+                {{ statement.description }}
+            </p>
+
+            <p>
+                <strong>Type:</strong>
+                {{ statement.get_transaction_type_display }}
+            </p>
+
+            <p>
+                <strong>Amount:</strong>
+                ₹{{ statement.amount }}
+            </p>
+
+            <p>
+                <strong>Bank:</strong>
+                {{ statement.bank_name }}
+            </p>
+
+            <p>
+                <strong>Reconciled:</strong>
+
+                {% if statement.reconciled %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+
+            </p>
+
+            <a href="{% url 'edit_bank_statement' statement.id %}">
+                <button>Edit</button>
+            </a>
+
+            <hr>
+
+        </div>
+
+    {% empty %}
+
+        <p>
+            No bank statements available.
+        </p>
+
+    {% endfor %}
+
+    <br>
+
+    <a href="{% url 'accountant_dashboard' %}">
+        <button>
+            Back to Accountant Dashboard
+        </button>
+    </a>
+
+</body>
+</html>

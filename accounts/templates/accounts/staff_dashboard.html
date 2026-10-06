@@ -31,24 +31,46 @@
     </p>
 
     <hr>
+
     <a href="{% url 'my_profile' %}">
-    <button>My Profile</button>
-</a>
-<a href="{% url 'submit_daily_report' %}">
-    <button>Submit Daily Report</button>
-</a>
+        <button>My Profile</button>
+    </a>
 
-<a href="{% url 'my_daily_reports' %}">
-    <button>My Daily Reports</button>
-</a>
+    <a href="{% url 'submit_daily_report' %}">
+        <button>Submit Daily Report</button>
+    </a>
 
-<a href="{% url 'apply_leave' %}">
-    <button>Apply Leave</button>
-</a>
+    <a href="{% url 'my_daily_reports' %}">
+        <button>My Daily Reports</button>
+    </a>
 
-<a href="{% url 'my_leaves' %}">
-    <button>My Leaves</button>
-</a>
+    <a href="{% url 'apply_leave' %}">
+        <button>Apply Leave</button>
+    </a>
+
+    <a href="{% url 'my_leaves' %}">
+        <button>My Leaves</button>
+    </a>
+
+    <a href="{% url 'employee_announcements' %}">
+        <button>Announcements</button>
+    </a>
+
+    <a href="{% url 'notifications' %}">
+        <button>Notifications 🔔</button>
+
+        {% if unread_count > 0 %}
+            🔴 {{ unread_count }}
+        {% endif %}
+    </a>
+
+    <a href="{% url 'submit_insurance_claim' %}">
+        <button>Submit Insurance Claim</button>
+    </a>
+
+    <a href="{% url 'my_insurance_claims' %}">
+        <button>My Insurance Claims</button>
+    </a>
 
     <h3>Staff Features</h3>
 
@@ -56,6 +78,7 @@
         <li>My Profile</li>
         <li>Daily Reports</li>
         <li>Leave Requests</li>
+        <li>Announcements</li>
         <li>Notifications</li>
         <li>Insurance</li>
     </ul>

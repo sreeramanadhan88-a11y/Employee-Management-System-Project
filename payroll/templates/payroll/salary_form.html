@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Salary</title>
+</head>
+<body>
+
+    <h1>Employee Management System</h1>
+
+    {% if salary %}
+        <h2>Edit Salary</h2>
+    {% else %}
+        <h2>Add Salary</h2>
+    {% endif %}
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            Save Salary
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{% url 'salary_list' %}">
+        <button>Back to Salaries</button>
+    </a>
+
+</body>
+</html>

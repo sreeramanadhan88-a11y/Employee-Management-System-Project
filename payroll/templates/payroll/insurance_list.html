@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Insurance Management</title>
+</head>
+<body>
+
+    <h1>Insurance Management</h1>
+
+    <a href="{% url 'add_insurance' %}">
+        <button>Add Insurance</button>
+    </a>
+
+    <a href="{% url 'accountant_dashboard' %}">
+        <button>Back to Dashboard</button>
+    </a>
+
+    <br><br>
+
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Employee ID</th>
+                <th>Role</th>
+                <th>Provider</th>
+                <th>Policy Number</th>
+                <th>Coverage Amount</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for insurance in insurances %}
+
+            <tr>
+                <td>
+                    {{ insurance.employee.get_full_name|default:insurance.employee.username }}
+                </td>
+
+                <td>
+                    {{ insurance.employee.employee_id }}
+                </td>
+
+                <td>
+                    {{ insurance.employee.get_role_display }}
+                </td>
+
+                <td>
+                    {{ insurance.insurance_provider }}
+                </td>
+
+                <td>
+                    {{ insurance.policy_number }}
+                </td>
+
+                <td>
+                    ₹{{ insurance.coverage_amount }}
+                </td>
+
+                <td>
+                    {{ insurance.start_date }}
+                </td>
+
+                <td>
+                    {{ insurance.end_date }}
+                </td>
+
+                <td>
+                    {% if insurance.is_active %}
+                        Active
+                    {% else %}
+                        Inactive
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% comment %} <a href="{% url 'edit_insurance' insurance.id %}">
+                        <button>Edit</button>
+                    </a> {% endcomment %}
+                </td>
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="10">
+                    No insurance records found.
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+</body>
+</html>

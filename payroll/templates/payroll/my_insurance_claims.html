@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Insurance Claims</title>
+</head>
+<body>
+
+    <h1>My Insurance Claims</h1>
+
+    <a href="{% url 'submit_insurance_claim' %}">
+        <button>Submit New Claim</button>
+    </a>
+
+    <br><br>
+
+    <table border="1" cellpadding="10">
+
+        <thead>
+            <tr>
+                <th>Claim Amount</th>
+                <th>Reason</th>
+                <th>Medical Certificate</th>
+                <th>Status</th>
+                <th>Submitted Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for claim in claims %}
+
+            <tr>
+
+                <td>
+                    ₹{{ claim.claim_amount }}
+                </td>
+
+                <td>
+                    {{ claim.claim_reason }}
+                </td>
+
+                <td>
+                    <a href="{{ claim.medical_certificate.url }}" target="_blank">
+                        View Certificate
+                    </a>
+                </td>
+
+                <td>
+                    {{ claim.get_status_display }}
+                </td>
+
+                <td>
+                    {{ claim.created_at|date:"d-m-Y" }}
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="5">
+                    You have not submitted any insurance claims yet.
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    <br>
+
+    <a href="{% url 'staff_dashboard' %}">
+        <button>Back to Dashboard</button>
+    </a>
+
+</body>
+</html>

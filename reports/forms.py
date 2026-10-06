@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import DailyReport
+from .models import DailyReport, Announcement
 
 
 class DailyReportForm(forms.ModelForm):
@@ -25,6 +25,26 @@ class DailyReportForm(forms.ModelForm):
                 attrs={
                     'rows': 5,
                     'placeholder': 'Describe the work you completed today...'
+                }
+            ),
+        }
+
+
+class AnnouncementForm(forms.ModelForm):
+
+    class Meta:
+        model = Announcement
+
+        fields = [
+            'title',
+            'message',
+        ]
+
+        widgets = {
+            'message': forms.Textarea(
+                attrs={
+                    'rows': 5,
+                    'placeholder': 'Write your announcement here...'
                 }
             ),
         }

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Announcement</title>
+</head>
+<body>
+
+    <h1>Employee Management System</h1>
+
+    <h2>Create Announcement</h2>
+
+    <p>
+        This announcement will be visible to all employees.
+    </p>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            Publish Announcement
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{% url 'admin_dashboard' %}">
+        <button>Back to Admin Dashboard</button>
+    </a>
+
+</body>
+</html>

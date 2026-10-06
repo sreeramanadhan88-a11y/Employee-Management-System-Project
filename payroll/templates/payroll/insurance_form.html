@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Insurance</title>
+</head>
+<body>
+
+    <h1>Add Employee Insurance</h1>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Save Insurance</button>
+
+    </form>
+
+    <br>
+
+    <a href="{% url 'insurance_list' %}">
+        <button>Back to Insurance</button>
+    </a>
+
+</body>
+</html>

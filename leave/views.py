@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 
 from .forms import LeaveRequestForm
 from .models import LeaveRequest
+from reports.models import Notification
 
 
 @login_required
@@ -100,9 +101,6 @@ def approve_leave(request, leave_id):
         id=leave_id
     )
 
-    # Make sure this leave belongs
-    # to the manager's team
-
     if leave_request.employee.manager != request.user:
         return render(
             request,
@@ -110,15 +108,18 @@ def approve_leave(request, leave_id):
         )
 
     leave_request.status = LeaveRequest.Status.APPROVED
-
     leave_request.reviewed_by = request.user
-
     leave_request.save()
+
+    Notification.objects.create(
+        employee=leave_request.employee,
+        title='Leave Approved',
+        message=f'Your {leave_request.leave_type} leave has been approved.'
+    )
 
     return redirect(
         'manager_leave_requests'
     )
-
 
 @login_required
 def reject_leave(request, leave_id):
@@ -133,9 +134,6 @@ def reject_leave(request, leave_id):
         id=leave_id
     )
 
-    # Make sure this leave belongs
-    # to the manager's team
-
     if leave_request.employee.manager != request.user:
         return render(
             request,
@@ -143,10 +141,14 @@ def reject_leave(request, leave_id):
         )
 
     leave_request.status = LeaveRequest.Status.REJECTED
-
     leave_request.reviewed_by = request.user
-
     leave_request.save()
+
+    Notification.objects.create(
+        employee=leave_request.employee,
+        title='Leave Rejected',
+        message=f'Your {leave_request.leave_type} leave has been rejected.'
+    )
 
     return redirect(
         'manager_leave_requests'

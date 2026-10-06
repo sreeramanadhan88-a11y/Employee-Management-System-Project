@@ -33,26 +33,55 @@
 
     <hr>
 
-    <h3>Accountant Features</h3>
+<h3>Accountant Features</h3>
 
-    <ul>
-        <li>Salary Management</li>
-        <li>Payment Records</li>
-        <li>Bank Statements</li>
-        <li>Accounting Management</li>
-        <li>Financial Statistics</li>
-        <li>Notifications</li>
-        <li>Insurance</li>
-    </ul>
+<a href="{% url 'salary_list' %}">
+    <button>Salary Management</button>
+</a>
 
-    <br>
-    <a href="{% url 'my_profile' %}">
+<a href="{% url 'payment_list' %}">
+    <button>Payment Records</button>
+</a>
+
+<a href="{% url 'bank_statement_list' %}">
+    <button>Bank Statements</button>
+</a>
+
+<button>Accounting Management</button>
+
+<button>Financial Statistics</button>
+
+<a href="{% url 'insurance_list' %}">
+    <button>Insurance Management</button>
+</a>
+
+<a href="{% url 'insurance_claim_list' %}">
+    <button>Insurance Claims</button>
+</a>
+
+<a href="{% url 'notifications' %}">
+    <button>
+        Notifications 🔔
+
+        {% if unread_count > 0 %}
+            🔴 {{ unread_count }}
+        {% endif %}
+    </button>
+</a>
+
+<br>
+
+<a href="{% url 'my_profile' %}">
     <button>My Profile</button>
 </a>
 
-    <a href="{% url 'logout' %}">
-        Logout
-    </a>
+<a href="{% url 'employee_announcements' %}">
+    <button>Announcements</button>
+</a>
+
+<a href="{% url 'logout' %}">
+    Logout
+</a>
 
 </body>
 </html>

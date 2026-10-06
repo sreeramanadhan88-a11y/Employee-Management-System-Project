@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Insurance Claims</title>
+</head>
+<body>
+
+    <h1>Insurance Claims</h1>
+
+    <a href="{% url 'accountant_dashboard' %}">
+        <button>Back to Dashboard</button>
+    </a>
+
+    <br><br>
+
+    <table border="1" cellpadding="10">
+
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Employee ID</th>
+                <th>Role</th>
+                <th>Claim Amount</th>
+                <th>Coverage</th>
+                <th>Reason</th>
+                <th>Medical Certificate</th>
+                <th>Status</th>
+                <th>Submitted Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for claim in claims %}
+
+            <tr>
+
+                <td>
+                    {{ claim.employee.get_full_name|default:claim.employee.username }}
+                </td>
+
+                <td>
+                    {{ claim.employee.employee_id }}
+                </td>
+
+                <td>
+                    {{ claim.employee.get_role_display }}
+                </td>
+
+                <td>
+                    ₹{{ claim.claim_amount }}
+                </td>
+
+                <td>
+                    ₹{{ claim.insurance.coverage_amount }}
+                </td>
+
+                <td>
+                    {{ claim.claim_reason }}
+                </td>
+
+                <td>
+                    <a href="{{ claim.medical_certificate.url }}" target="_blank">
+                        View Certificate
+                    </a>
+                </td>
+
+                <td>
+                    {{ claim.get_status_display }}
+                </td>
+
+                <td>
+                    {{ claim.created_at|date:"d-m-Y" }}
+                </td>
+
+                <td>
+
+                    {% if claim.status == 'PENDING' %}
+
+                        <a href="{% url 'approve_insurance_claim' claim.id %}">
+                            <button type="button">
+                                Approve
+                            </button>
+                        </a>
+
+                        <a href="{% url 'reject_insurance_claim' claim.id %}">
+                            <button type="button">
+                                Reject
+                            </button>
+                        </a>
+
+                    {% else %}
+
+                        Reviewed
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="10">
+                    No insurance claims found.
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</body>
+</html>

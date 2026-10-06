@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Announcements</title>
+</head>
+<body>
+
+    <h1>Employee Management System</h1>
+
+    <h2>Announcements</h2>
+
+    {% for announcement in announcements %}
+
+        <div>
+
+            <h3>
+                {{ announcement.title }}
+            </h3>
+
+            <p>
+                {{ announcement.message }}
+            </p>
+
+            <p>
+                <strong>Published By:</strong>
+                {{ announcement.created_by.username }}
+            </p>
+
+            <p>
+                <strong>Date:</strong>
+                {{ announcement.created_at }}
+            </p>
+
+            <hr>
+
+        </div>
+
+    {% empty %}
+
+        <p>
+            No announcements available.
+        </p>
+
+    {% endfor %}
+
+    <br>
+
+    {% if request.user.role == 'STAFF' %}
+
+        <a href="{% url 'staff_dashboard' %}">
+            <button>Back to Staff Dashboard</button>
+        </a>
+
+    {% elif request.user.role == 'MANAGER' %}
+
+        <a href="{% url 'manager_dashboard' %}">
+            <button>Back to Manager Dashboard</button>
+        </a>
+
+    {% elif request.user.role == 'ACCOUNTANT' %}
+
+        <a href="{% url 'accountant_dashboard' %}">
+            <button>Back to Accountant Dashboard</button>
+        </a>
+
+    {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Records</title>
+</head>
+<body>
+
+    <h1>Employee Management System</h1>
+
+    <h2>Payment Records</h2>
+
+    <a href="{% url 'add_payment' %}">
+        <button>Add Payment</button>
+    </a>
+
+    <br><br>
+
+    {% for payment in payments %}
+
+        <div>
+
+            <p>
+                <strong>Employee:</strong>
+                {{ payment.employee.get_full_name }}
+            </p>
+
+            <p>
+                <strong>Employee ID:</strong>
+                {{ payment.employee.employee_id }}
+            </p>
+
+            <p>
+                <strong>Salary:</strong>
+                ₹{{ payment.salary.net_salary }}
+            </p>
+
+            <p>
+                <strong>Amount Paid:</strong>
+                ₹{{ payment.amount }}
+            </p>
+
+            <p>
+                <strong>Payment Date:</strong>
+                {{ payment.payment_date }}
+            </p>
+
+            <p>
+                <strong>Payment Method:</strong>
+                {{ payment.get_payment_method_display }}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                {{ payment.get_payment_status_display }}
+            </p>
+
+            {% if payment.transaction_reference %}
+                <p>
+                    <strong>Transaction Reference:</strong>
+                    {{ payment.transaction_reference }}
+                </p>
+            {% endif %}
+
+            <p>
+                <strong>Processed By:</strong>
+                {{ payment.processed_by.get_full_name }}
+            </p>
+
+            <a href="{% url 'edit_payment' payment.id %}">
+                <button>Edit</button>
+            </a>
+
+            <hr>
+
+        </div>
+
+    {% empty %}
+
+        <p>No payment records available.</p>
+
+    {% endfor %}
+
+    <br>
+
+    <a href="{% url 'accountant_dashboard' %}">
+        <button>Back to Accountant Dashboard</button>
+    </a>
+
+</body>
+</html>

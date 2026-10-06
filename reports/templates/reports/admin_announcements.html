@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Announcements</title>
+</head>
+<body>
+
+    <h1>Announcements</h1>
+
+    <a href="{% url 'create_announcement' %}">
+        <button>Create New Announcement</button>
+    </a>
+
+    <hr>
+
+    {% for announcement in announcements %}
+
+        <div>
+
+            <h2>
+                {{ announcement.title }}
+            </h2>
+
+            <p>
+                {{ announcement.message }}
+            </p>
+
+            <p>
+                <strong>Created By:</strong>
+                {{ announcement.created_by.username }}
+            </p>
+
+            <p>
+                <strong>Created At:</strong>
+                {{ announcement.created_at }}
+            </p>
+
+            <hr>
+
+        </div>
+
+    {% empty %}
+
+        <p>
+            No announcements have been created yet.
+        </p>
+
+    {% endfor %}
+
+    <br>
+
+    <a href="{% url 'admin_dashboard' %}">
+        <button>Back to Admin Dashboard</button>
+    </a>
+
+</body>
+</html>

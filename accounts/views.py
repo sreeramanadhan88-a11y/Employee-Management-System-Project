@@ -219,14 +219,21 @@ def manager_dashboard(request):
 
     team_members = request.user.team_members.all()
 
+    from reports.models import Notification
+
+    unread_count = Notification.objects.filter(
+        employee=request.user,
+        is_read=False
+    ).count()
+
     return render(
         request,
         'accounts/manager_dashboard.html',
         {
-            'team_members': team_members
+            'team_members': team_members,
+            'unread_count': unread_count
         }
     )
-
 
 # =========================
 # STAFF DASHBOARD
@@ -241,9 +248,19 @@ def staff_dashboard(request):
             'accounts/access_denied.html'
         )
 
+    from reports.models import Notification
+
+    unread_count = Notification.objects.filter(
+        employee=request.user,
+        is_read=False
+    ).count()
+
     return render(
         request,
-        'accounts/staff_dashboard.html'
+        'accounts/staff_dashboard.html',
+        {
+            'unread_count': unread_count
+        }
     )
 
 
@@ -260,9 +277,19 @@ def accountant_dashboard(request):
             'accounts/access_denied.html'
         )
 
+    from reports.models import Notification
+
+    unread_count = Notification.objects.filter(
+        employee=request.user,
+        is_read=False
+    ).count()
+
     return render(
         request,
-        'accounts/accountant_dashboard.html'
+        'accounts/accountant_dashboard.html',
+        {
+            'unread_count': unread_count
+        }
     )
 
 

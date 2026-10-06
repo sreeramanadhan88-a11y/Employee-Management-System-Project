@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bank Statement</title>
+</head>
+<body>
+
+    <h1>Employee Management System</h1>
+
+    {% if statement %}
+        <h2>Edit Bank Statement</h2>
+    {% else %}
+        <h2>Add Bank Statement</h2>
+    {% endif %}
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            Save Bank Statement
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{% url 'bank_statement_list' %}">
+        <button>
+            Back to Bank Statements
+        </button>
+    </a>
+
+</body>
+</html>

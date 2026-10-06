@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Salary Management</title>
+</head>
+<body>
+
+    <h1>Employee Management System</h1>
+
+    <h2>Salary Management</h2>
+
+    <a href="{% url 'add_salary' %}">
+        <button>Add Salary</button>
+    </a>
+
+    <br><br>
+
+    {% for salary in salaries %}
+
+        <div>
+
+            <p>
+                <strong>Employee:</strong>
+                {{ salary.employee.get_full_name }}
+            </p>
+
+            <p>
+                <strong>Employee ID:</strong>
+                {{ salary.employee.employee_id }}
+            </p>
+
+            <p>
+                <strong>Basic Salary:</strong>
+                ₹{{ salary.basic_salary }}
+            </p>
+
+            <p>
+                <strong>Allowances:</strong>
+                ₹{{ salary.allowances }}
+            </p>
+
+            <p>
+                <strong>Deductions:</strong>
+                ₹{{ salary.deductions }}
+            </p>
+
+            <p>
+                <strong>Net Salary:</strong>
+                ₹{{ salary.net_salary }}
+            </p>
+
+            <p>
+                <strong>Effective From:</strong>
+                {{ salary.effective_from }}
+            </p>
+
+            <a href="{% url 'edit_salary' salary.id %}">
+                <button>Edit</button>
+            </a>
+
+            <hr>
+
+        </div>
+
+    {% empty %}
+
+        <p>No salary records available.</p>
+
+    {% endfor %}
+
+    <br>
+
+    <a href="{% url 'accountant_dashboard' %}">
+        <button>Back to Accountant Dashboard</button>
+    </a>
+
+</body>
+</html>

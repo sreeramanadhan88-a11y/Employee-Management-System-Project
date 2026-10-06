@@ -35,4 +35,5 @@ urlpatterns = [
         include('leave.urls')
     ),
      path('reports/', include('reports.urls')),
+     path('payroll/', include('payroll.urls')),
 ]

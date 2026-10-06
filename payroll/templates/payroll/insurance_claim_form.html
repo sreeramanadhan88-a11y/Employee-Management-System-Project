@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submit Insurance Claim</title>
+</head>
+<body>
+
+    <h1>Submit Insurance Claim</h1>
+
+    <h3>My Insurance</h3>
+
+    <p>
+        <strong>Provider:</strong>
+        {{ insurance.insurance_provider }}
+    </p>
+
+    <p>
+        <strong>Policy Number:</strong>
+        {{ insurance.policy_number }}
+    </p>
+
+    <p>
+        <strong>Coverage Amount:</strong>
+        ₹{{ insurance.coverage_amount }}
+    </p>
+
+    <p>
+        <strong>Policy Start:</strong>
+        {{ insurance.start_date }}
+    </p>
+
+    <p>
+        <strong>Policy End:</strong>
+        {{ insurance.end_date }}
+    </p>
+
+    <hr>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            Submit Claim
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{% url 'accountant_dashboard' %}">
+        <button>Back to Dashboard</button>
+    </a>
+
+</body>
+</html>
