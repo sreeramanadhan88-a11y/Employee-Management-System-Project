@@ -1,3 +1,4 @@
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
@@ -9,7 +10,7 @@ from reports.models import Notification
 @login_required
 def apply_leave(request):
 
-    if request.user.role != 'STAFF':
+    if request.user.role not in ['STAFF', 'ACCOUNTANT']:
         return render(
             request,
             'leave/access_denied.html'
@@ -51,7 +52,7 @@ def apply_leave(request):
 @login_required
 def my_leaves(request):
 
-    if request.user.role != 'STAFF':
+    if request.user.role not in ['STAFF', 'ACCOUNTANT']:
         return render(
             request,
             'leave/access_denied.html'
@@ -68,6 +69,12 @@ def my_leaves(request):
             'leaves': leaves
         }
     )
+
+
+# =========================
+# MANAGER LEAVE REQUESTS
+# =========================
+
 @login_required
 def manager_leave_requests(request):
 
@@ -88,6 +95,38 @@ def manager_leave_requests(request):
             'leave_requests': leave_requests
         }
     )
+
+
+# =========================
+# ADMIN LEAVE REQUESTS
+# =========================
+
+@login_required
+def admin_leave_requests(request):
+
+    if not request.user.is_superuser:
+        return render(
+            request,
+            'leave/access_denied.html'
+        )
+
+    leave_requests = LeaveRequest.objects.all().order_by(
+        '-created_at'
+    )
+
+    return render(
+        request,
+        'leave/admin_leave_requests.html',
+        {
+            'leave_requests': leave_requests
+        }
+    )
+
+
+# =========================
+# APPROVE LEAVE
+# =========================
+
 @login_required
 def approve_leave(request, leave_id):
 
@@ -120,6 +159,11 @@ def approve_leave(request, leave_id):
     return redirect(
         'manager_leave_requests'
     )
+
+
+# =========================
+# REJECT LEAVE
+# =========================
 
 @login_required
 def reject_leave(request, leave_id):

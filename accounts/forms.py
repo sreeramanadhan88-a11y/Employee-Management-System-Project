@@ -4,12 +4,29 @@ from .models import User
 
 class EmployeeCreationForm(forms.ModelForm):
 
+    username = forms.CharField(
+        max_length=150,
+        help_text='',
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter username'
+            }
+        )
+    )
+
     password = forms.CharField(
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter password'
+            }
+        ),
         min_length=8
     )
 
     class Meta:
+
         model = User
 
         fields = [
@@ -28,8 +45,71 @@ class EmployeeCreationForm(forms.ModelForm):
         ]
 
         widgets = {
+
+            'email': forms.EmailInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter email address'
+                }
+            ),
+
+            'first_name': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter first name'
+                }
+            ),
+
+            'last_name': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter last name'
+                }
+            ),
+
+            'employee_id': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter employee ID'
+                }
+            ),
+
+            'phone': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter phone number'
+                }
+            ),
+
+            'role': forms.Select(
+                attrs={
+                    'class': 'form-select'
+                }
+            ),
+
+            'department': forms.Select(
+                attrs={
+                    'class': 'form-select'
+                }
+            ),
+
+            'manager': forms.Select(
+                attrs={
+                    'class': 'form-select'
+                }
+            ),
+
             'joining_date': forms.DateInput(
-                attrs={'type': 'date'}
+                attrs={
+                    'type': 'date',
+                    'class': 'form-control'
+                }
+            ),
+
+            'profile_image': forms.ClearableFileInput(
+                attrs={
+                    'class': 'form-control'
+                }
             ),
         }
 
@@ -57,11 +137,24 @@ class EmployeeCreationForm(forms.ModelForm):
 class LoginForm(forms.Form):
 
     username = forms.CharField(
-        max_length=150
+        max_length=150,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter username',
+                'autocomplete': 'username'
+            }
+        )
     )
 
     password = forms.CharField(
-        widget=forms.PasswordInput
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter password',
+                'autocomplete': 'current-password'
+            }
+        )
     )
 
 
@@ -78,3 +171,40 @@ class ProfileUpdateForm(forms.ModelForm):
             'phone',
             'profile_image',
         ]
+
+        widgets = {
+
+            'first_name': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter first name'
+                }
+            ),
+
+            'last_name': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter last name'
+                }
+            ),
+
+            'email': forms.EmailInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter email address'
+                }
+            ),
+
+            'phone': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter phone number'
+                }
+            ),
+
+            'profile_image': forms.ClearableFileInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+        }

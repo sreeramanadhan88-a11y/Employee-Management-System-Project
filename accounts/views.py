@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from .models import LoginActivity
 
 from .models import User
 from .forms import EmployeeCreationForm, LoginForm,ProfileUpdateForm
@@ -204,6 +205,7 @@ def delete_employee(request, employee_id):
     )
 
 
+
 # =========================
 # MANAGER DASHBOARD
 # =========================
@@ -220,10 +222,18 @@ def manager_dashboard(request):
     team_members = request.user.team_members.all()
 
     from reports.models import Notification
+    from leave.models import LeaveRequest
 
+    # Unread notifications
     unread_count = Notification.objects.filter(
         employee=request.user,
         is_read=False
+    ).count()
+
+    # Pending leave requests from manager's team
+    pending_leave_count = LeaveRequest.objects.filter(
+        employee__manager=request.user,
+        status='PENDING'
     ).count()
 
     return render(
@@ -231,9 +241,11 @@ def manager_dashboard(request):
         'accounts/manager_dashboard.html',
         {
             'team_members': team_members,
-            'unread_count': unread_count
+            'unread_count': unread_count,
+            'pending_leave_count': pending_leave_count
         }
     )
+
 
 # =========================
 # STAFF DASHBOARD
@@ -467,5 +479,27 @@ def my_profile(request):
         'accounts/my_profile.html',
         {
             'form': form
+        }
+    )
+@login_required
+def admin_login_activity(request):
+
+    if not request.user.is_superuser:
+        return render(
+            request,
+            'accounts/access_denied.html'
+        )
+
+    activities = LoginActivity.objects.select_related(
+        'employee'
+    ).order_by(
+        '-login_time'
+    )
+
+    return render(
+        request,
+        'accounts/admin_login_activity.html',
+        {
+            'activities': activities
         }
     )

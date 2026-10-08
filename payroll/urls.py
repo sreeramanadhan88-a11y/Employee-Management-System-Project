@@ -111,5 +111,26 @@ urlpatterns = [
         views.reject_insurance_claim,
         name='reject_insurance_claim'
     ),
+    path(
+    'admin-financial-control/',
+    views.admin_financial_control,
+    name='admin_financial_control'
+),
+path(
+    'admin-insurance-control/',
+    views.admin_insurance_control,
+    name='admin_insurance_control'
+),
+path(
+    'admin-payment-records/',
+    views.admin_payment_records,
+    name='admin_payment_records'
+),
+
+path(
+    'admin-bank-records/',
+    views.admin_bank_records,
+    name='admin_bank_records'
+),
 
 ]

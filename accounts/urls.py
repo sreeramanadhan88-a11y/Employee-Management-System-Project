@@ -61,4 +61,9 @@ path(
     views.my_profile,
     name='my_profile'
 ),
+path(
+    'admin-login-activity/',
+    views.admin_login_activity,
+    name='admin_login_activity'
+),
 ]

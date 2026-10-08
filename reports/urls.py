@@ -46,5 +46,10 @@ path(
     views.mark_notification_read,
     name='mark_notification_read'
 ),
+path(
+    'admin-work-monitoring/',
+    views.admin_work_monitoring,
+    name='admin_work_monitoring'
+),
 
 ]

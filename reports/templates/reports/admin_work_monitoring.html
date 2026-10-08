@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Work Monitoring | EMS</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet"
+    >
+
+</head>
+
+<body class="bg-light">
+
+<!-- NAVBAR -->
+
+<nav class="navbar navbar-dark bg-dark">
+
+    <div class="container-fluid">
+
+        <a class="navbar-brand fw-bold" href="#">
+            EMS
+        </a>
+
+        <span class="text-white">
+            Admin Work Monitoring
+        </span>
+
+        <a
+            href="{% url 'admin_dashboard' %}"
+            class="btn btn-outline-light btn-sm"
+        >
+            <i class="bi bi-speedometer2"></i>
+            Dashboard
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- MAIN CONTENT -->
+
+<div class="container py-4">
+
+    <div class="mb-4">
+
+        <h3 class="fw-bold mb-1">
+            Work Monitoring
+        </h3>
+
+        <p class="text-muted mb-0">
+            Monitor employee daily work reports.
+        </p>
+
+    </div>
+
+
+    <!-- KPI CARDS -->
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Total Reports
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+                        {{ total_reports }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Today's Reports
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+                        {{ today_reports }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Submitted Today
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+                        {{ employees_with_reports_today }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Not Submitted
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+                        {{ employees_without_report }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RECENT REPORTS -->
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white fw-bold">
+
+            <i class="bi bi-clipboard-data"></i>
+            Recent Daily Reports
+
+        </div>
+
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>Employee</th>
+
+                            <th>Date</th>
+
+                            <th>Work Title</th>
+
+                            <th>Work Description</th>
+
+                            <th>Submitted</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for report in recent_reports %}
+
+                        <tr>
+
+                            <td class="fw-semibold">
+                                {{ report.employee.username }}
+                            </td>
+
+                            <td>
+                                {{ report.report_date }}
+                            </td>
+
+                            <td>
+                                {{ report.work_title }}
+                            </td>
+
+                            <td>
+                                {{ report.work_description|truncatechars:80 }}
+                            </td>
+
+                            <td>
+                                {{ report.created_at|date:"d M Y, h:i A" }}
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td
+                                colspan="5"
+                                class="text-center text-muted py-4"
+                            >
+
+                                No daily reports available.
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="text-center text-muted small mt-4">
+
+        <i class="bi bi-eye"></i>
+        Read Only · Admin Monitoring
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

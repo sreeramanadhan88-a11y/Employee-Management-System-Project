@@ -1,78 +1,216 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Salary Management</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Salary Management | Employee Management System</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
 </head>
-<body>
 
-    <h1>Employee Management System</h1>
+<body class="bg-light">
 
-    <h2>Salary Management</h2>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container-fluid">
 
-    <a href="{% url 'add_salary' %}">
-        <button>Add Salary</button>
-    </a>
-
-    <br><br>
-
-    {% for salary in salaries %}
-
-        <div>
-
-            <p>
-                <strong>Employee:</strong>
-                {{ salary.employee.get_full_name }}
-            </p>
-
-            <p>
-                <strong>Employee ID:</strong>
-                {{ salary.employee.employee_id }}
-            </p>
-
-            <p>
-                <strong>Basic Salary:</strong>
-                ₹{{ salary.basic_salary }}
-            </p>
-
-            <p>
-                <strong>Allowances:</strong>
-                ₹{{ salary.allowances }}
-            </p>
-
-            <p>
-                <strong>Deductions:</strong>
-                ₹{{ salary.deductions }}
-            </p>
-
-            <p>
-                <strong>Net Salary:</strong>
-                ₹{{ salary.net_salary }}
-            </p>
-
-            <p>
-                <strong>Effective From:</strong>
-                {{ salary.effective_from }}
-            </p>
-
-            <a href="{% url 'edit_salary' salary.id %}">
-                <button>Edit</button>
+            <a href="{% url 'accountant_dashboard' %}"
+               class="navbar-brand fw-bold">
+                Employee Management System
             </a>
 
-            <hr>
+            <a href="{% url 'logout' %}"
+               class="btn btn-outline-light btn-sm">
+                Logout
+            </a>
+
+        </div>
+    </nav>
+
+
+    <!-- Main Content -->
+    <div class="container py-5">
+
+        <!-- Page Header -->
+        <div class="d-flex flex-column flex-md-row
+                    justify-content-between align-items-md-center
+                    gap-3 mb-4">
+
+            <div>
+                <h2 class="fw-bold mb-1">
+                    Salary Management
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Manage employee salary records.
+                </p>
+            </div>
+
+            <a href="{% url 'add_salary' %}"
+               class="btn btn-primary">
+                + Add Salary
+            </a>
 
         </div>
 
-    {% empty %}
 
-        <p>No salary records available.</p>
+        <!-- Salary Records -->
+        {% for salary in salaries %}
 
-    {% endfor %}
+        <div class="card border-0 shadow-sm mb-4">
 
-    <br>
+            <div class="card-body p-4">
 
-    <a href="{% url 'accountant_dashboard' %}">
-        <button>Back to Accountant Dashboard</button>
-    </a>
+                <div class="row g-4">
+
+                    <!-- Employee Information -->
+                    <div class="col-12 col-md-6 col-lg-4">
+
+                        <h5 class="fw-bold mb-3">
+                            👤 Employee
+                        </h5>
+
+                        <p class="mb-2">
+                            <strong>Name:</strong>
+                            {{ salary.employee.get_full_name }}
+                        </p>
+
+                        <p class="mb-0">
+                            <strong>Employee ID:</strong>
+                            {{ salary.employee.employee_id }}
+                        </p>
+
+                    </div>
+
+
+                    <!-- Salary Components -->
+                    <div class="col-12 col-md-6 col-lg-4">
+
+                        <h5 class="fw-bold mb-3">
+                            💰 Salary Details
+                        </h5>
+
+                        <p class="mb-2">
+                            <strong>Basic Salary:</strong>
+                            ₹{{ salary.basic_salary }}
+                        </p>
+
+                        <p class="mb-2">
+                            <strong>Allowances:</strong>
+                            <span class="text-success">
+                                + ₹{{ salary.allowances }}
+                            </span>
+                        </p>
+
+                        <p class="mb-2">
+                            <strong>Deductions:</strong>
+                            <span class="text-danger">
+                                - ₹{{ salary.deductions }}
+                            </span>
+                        </p>
+
+                        <p class="mb-0">
+                            <strong>Effective From:</strong>
+                            {{ salary.effective_from }}
+                        </p>
+
+                    </div>
+
+
+                    <!-- Net Salary & Action -->
+                    <div class="col-12 col-lg-4">
+
+                        <h5 class="fw-bold mb-3">
+                            📊 Net Salary
+                        </h5>
+
+                        <div class="bg-light rounded p-3 mb-3">
+
+                            <small class="text-muted">
+                                Calculated Net Salary
+                            </small>
+
+                            <div class="fs-4 fw-bold text-primary">
+                                ₹{{ salary.net_salary }}
+                            </div>
+
+                            <small class="text-muted">
+                                Basic + Allowances − Deductions
+                            </small>
+
+                        </div>
+
+                        <a href="{% url 'edit_salary' salary.id %}"
+                           class="btn btn-outline-primary btn-sm">
+                            Edit Salary
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <!-- Empty State -->
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body text-center py-5">
+
+                <div class="display-4 mb-3">
+                    💰
+                </div>
+
+                <h4 class="fw-bold">
+                    No Salary Records
+                </h4>
+
+                <p class="text-muted mb-4">
+                    No employee salary records are available yet.
+                </p>
+
+                <a href="{% url 'add_salary' %}"
+                   class="btn btn-primary">
+                    + Add Salary
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+
+        <!-- Back Button -->
+        <div class="mt-4">
+
+            <a href="{% url 'accountant_dashboard' %}"
+               class="btn btn-outline-secondary">
+                ← Back to Accountant Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+
+        <small>
+            Employee Management System
+        </small>
+
+    </footer>
 
 </body>
 </html>

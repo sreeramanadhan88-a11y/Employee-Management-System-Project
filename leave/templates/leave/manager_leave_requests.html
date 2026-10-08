@@ -1,84 +1,204 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Leave Requests</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Leave Requests | Employee Management System</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
 </head>
-<body>
 
-    <h1>Manager Leave Requests</h1>
+<body class="bg-light">
 
-    <p>
-        Review leave requests from your team.
-    </p>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a href="{% url 'manager_dashboard' %}"
+               class="navbar-brand fw-bold">
+                Employee Management System
+            </a>
 
-    {% for leave in leave_requests %}
+            <a href="{% url 'logout' %}"
+               class="btn btn-outline-light btn-sm">
+                Logout
+            </a>
+        </div>
+    </nav>
 
-        <div>
 
-            <p>
-                <strong>Employee:</strong>
-                {{ leave.employee.get_full_name|default:leave.employee.username }}
+    <!-- Main Content -->
+    <div class="container py-5">
+
+        <div class="mb-4">
+            <h2 class="fw-bold mb-2">
+                Manager Leave Requests
+            </h2>
+
+            <p class="text-muted mb-0">
+                Review leave requests from your team.
             </p>
+        </div>
 
-            <p>
-                <strong>Employee ID:</strong>
-                {{ leave.employee.employee_id }}
-            </p>
 
-            <p>
-                <strong>Leave Type:</strong>
-                {{ leave.leave_type }}
-            </p>
+        <!-- Leave Requests -->
+        <div class="row g-4">
 
-            <p>
-                <strong>From:</strong>
-                {{ leave.from_date }}
-            </p>
+            {% for leave in leave_requests %}
 
-            <p>
-                <strong>To:</strong>
-                {{ leave.to_date }}
-            </p>
+                <div class="col-lg-6">
 
-            <p>
-                <strong>Reason:</strong>
-                {{ leave.reason }}
-            </p>
+                    <div class="card border-0 shadow-sm h-100">
 
-            <p>
-                <strong>Status:</strong>
-                {{ leave.get_status_display }}
-            </p>
+                        <div class="card-body p-4">
 
-            {% if leave.status == 'PENDING' %}
+                            <div class="d-flex justify-content-between
+                                        align-items-start mb-3">
 
-                <a href="{% url 'approve_leave' leave.id %}">
-                    <button>Approve</button>
-                </a>
+                                <h5 class="fw-bold mb-0">
+                                    {{ leave.employee.get_full_name|default:leave.employee.username }}
+                                </h5>
 
-                <a href="{% url 'reject_leave' leave.id %}">
-                    <button>Reject</button>
-                </a>
+                                {% if leave.status == 'PENDING' %}
 
-            {% endif %}
+                                    <span class="badge bg-warning text-dark">
+                                        {{ leave.get_status_display }}
+                                    </span>
 
-            <hr>
+                                {% elif leave.status == 'APPROVED' %}
+
+                                    <span class="badge bg-success">
+                                        {{ leave.get_status_display }}
+                                    </span>
+
+                                {% elif leave.status == 'REJECTED' %}
+
+                                    <span class="badge bg-danger">
+                                        {{ leave.get_status_display }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-secondary">
+                                        {{ leave.get_status_display }}
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="mb-3">
+
+                                <p class="mb-2">
+                                    <strong>Employee ID:</strong>
+                                    {{ leave.employee.employee_id }}
+                                </p>
+
+                                <p class="mb-2">
+                                    <strong>Leave Type:</strong>
+                                    {{ leave.leave_type }}
+                                </p>
+
+                                <p class="mb-2">
+                                    <strong>From:</strong>
+                                    {{ leave.from_date }}
+                                </p>
+
+                                <p class="mb-2">
+                                    <strong>To:</strong>
+                                    {{ leave.to_date }}
+                                </p>
+
+                                <p class="mb-0">
+                                    <strong>Reason:</strong>
+                                    {{ leave.reason }}
+                                </p>
+
+                            </div>
+
+
+                            {% if leave.status == 'PENDING' %}
+
+                                <div class="d-flex gap-2 pt-3 border-top">
+
+                                    <a href="{% url 'approve_leave' leave.id %}"
+                                       class="btn btn-success flex-fill">
+                                        ✓ Approve
+                                    </a>
+
+                                    <a href="{% url 'reject_leave' leave.id %}"
+                                       class="btn btn-danger flex-fill">
+                                        ✕ Reject
+                                    </a>
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <div class="col-12">
+
+                    <div class="card border-0 shadow-sm">
+
+                        <div class="card-body text-center py-5">
+
+                            <div class="fs-1 mb-3">
+                                📋
+                            </div>
+
+                            <h5 class="fw-bold">
+                                No Leave Requests
+                            </h5>
+
+                            <p class="text-muted mb-0">
+                                No leave requests from your team.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
 
         </div>
 
-    {% empty %}
 
-        <p>
-            No leave requests from your team.
-        </p>
+        <!-- Back Button -->
+        <div class="mt-4">
 
-    {% endfor %}
+            <a href="{% url 'manager_dashboard' %}"
+               class="btn btn-outline-secondary">
+                ← Back to Manager Dashboard
+            </a>
 
-    <br>
+        </div>
 
-    <a href="{% url 'manager_dashboard' %}">
-        Back to Manager Dashboard
-    </a>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+
+        <small>
+            Employee Management System
+        </small>
+
+    </footer>
 
 </body>
 </html>

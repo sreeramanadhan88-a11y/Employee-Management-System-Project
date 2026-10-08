@@ -5,6 +5,7 @@ from .models import LeaveRequest
 class LeaveRequestForm(forms.ModelForm):
 
     class Meta:
+
         model = LeaveRequest
 
         fields = [
@@ -15,17 +16,33 @@ class LeaveRequestForm(forms.ModelForm):
         ]
 
         widgets = {
+
+            'leave_type': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter leave type (e.g. Casual Leave)'
+                }
+            ),
+
             'from_date': forms.DateInput(
-                attrs={'type': 'date'}
+                attrs={
+                    'type': 'date',
+                    'class': 'form-control'
+                }
             ),
 
             'to_date': forms.DateInput(
-                attrs={'type': 'date'}
+                attrs={
+                    'type': 'date',
+                    'class': 'form-control'
+                }
             ),
 
             'reason': forms.Textarea(
                 attrs={
-                    'rows': 4
+                    'class': 'form-control',
+                    'rows': 4,
+                    'placeholder': 'Enter the reason for your leave'
                 }
             ),
         }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employees</title>
+</head>
+<body>
+
+    <h1>Employee Management</h1>
+
+    <p>List of employees</p>
+
+    {% for employee in employees %}
+
+        <p>
+            {{ employee.employee_id }}
+            -
+            {{ employee.username }}
+            -
+            {{ employee.role }}
+        </p>
+
+    {% empty %}
+
+        <p>No employees found.</p>
+
+    {% endfor %}
+
+</body>
+</html>

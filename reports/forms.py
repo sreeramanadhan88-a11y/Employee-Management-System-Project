@@ -6,6 +6,7 @@ from .models import DailyReport, Announcement
 class DailyReportForm(forms.ModelForm):
 
     class Meta:
+
         model = DailyReport
 
         fields = [
@@ -15,16 +16,26 @@ class DailyReportForm(forms.ModelForm):
         ]
 
         widgets = {
+
             'report_date': forms.DateInput(
                 attrs={
-                    'type': 'date'
+                    'type': 'date',
+                    'class': 'form-control',
+                }
+            ),
+
+            'work_title': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter the title of your work',
                 }
             ),
 
             'work_description': forms.Textarea(
                 attrs={
+                    'class': 'form-control',
                     'rows': 5,
-                    'placeholder': 'Describe the work you completed today...'
+                    'placeholder': 'Describe the work you completed today...',
                 }
             ),
         }
@@ -33,6 +44,7 @@ class DailyReportForm(forms.ModelForm):
 class AnnouncementForm(forms.ModelForm):
 
     class Meta:
+
         model = Announcement
 
         fields = [
@@ -41,10 +53,19 @@ class AnnouncementForm(forms.ModelForm):
         ]
 
         widgets = {
+
+            'title': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter announcement title',
+                }
+            ),
+
             'message': forms.Textarea(
                 attrs={
+                    'class': 'form-control',
                     'rows': 5,
-                    'placeholder': 'Write your announcement here...'
+                    'placeholder': 'Write your announcement here...',
                 }
             ),
         }

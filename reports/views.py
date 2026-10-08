@@ -1,10 +1,12 @@
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from accounts.models import User
+from django.utils import timezone
 
 from .forms import DailyReportForm, AnnouncementForm
-from .models import DailyReport,Announcement,Notification
+from .models import DailyReport, Announcement, Notification
 
 
 @login_required
@@ -60,7 +62,10 @@ def my_daily_reports(request):
 
     reports = DailyReport.objects.filter(
         employee=request.user
-    ).order_by('-report_date', '-created_at')
+    ).order_by(
+        '-report_date',
+        '-created_at'
+    )
 
     return render(
         request,
@@ -69,6 +74,8 @@ def my_daily_reports(request):
             'reports': reports
         }
     )
+
+
 @login_required
 def team_daily_reports(request):
 
@@ -93,6 +100,64 @@ def team_daily_reports(request):
         }
     )
 @login_required
+def admin_work_monitoring(request):
+
+    if not request.user.is_superuser:
+        return render(
+            request,
+            'reports/access_denied.html'
+        )
+
+    reports = DailyReport.objects.all().select_related(
+        'employee'
+    ).order_by(
+        '-report_date',
+        '-created_at'
+    )
+
+    total_reports = reports.count()
+
+    today = timezone.localdate()
+
+    today_reports = reports.filter(
+        report_date=today
+    ).count()
+
+    employees_with_reports_today = reports.filter(
+        report_date=today
+    ).values(
+        'employee'
+    ).distinct().count()
+
+    total_employees = User.objects.filter(
+        is_active=True,
+        is_superuser=False
+    ).count()
+
+    employees_without_report = max(
+        total_employees - employees_with_reports_today,
+        0
+    )
+
+    recent_reports = reports[:10]
+
+    context = {
+        'total_reports': total_reports,
+        'today_reports': today_reports,
+        'employees_with_reports_today': employees_with_reports_today,
+        'employees_without_report': employees_without_report,
+        'recent_reports': recent_reports,
+    }
+
+    return render(
+        request,
+        'reports/admin_work_monitoring.html',
+        context
+    )
+
+
+
+@login_required
 def create_announcement(request):
 
     if not request.user.is_superuser:
@@ -114,9 +179,26 @@ def create_announcement(request):
             )
 
             announcement.created_by = request.user
+
             announcement.save()
 
-            
+            # Get all employees who should receive announcements
+            employees = User.objects.filter(
+                role__in=[
+                    'MANAGER',
+                    'STAFF',
+                    'ACCOUNTANT'
+                ]
+            )
+
+            # Create an unread notification for each employee
+            for employee in employees:
+
+                Notification.objects.create(
+                    employee=employee,
+                    title=announcement.title,
+                    message=announcement.message
+                )
 
             return redirect(
                 'admin_announcements'
@@ -133,6 +215,8 @@ def create_announcement(request):
             'form': form
         }
     )
+
+
 @login_required
 def admin_announcements(request):
 
@@ -142,17 +226,37 @@ def admin_announcements(request):
             'reports/access_denied.html'
         )
 
-    announcements = Announcement.objects.all().order_by(
-        '-created_at'
-    )
+    if request.method == 'POST':
+
+        form = AnnouncementForm(request.POST)
+
+        if form.is_valid():
+
+            announcement = form.save(
+                commit=False
+            )
+
+            announcement.created_by = request.user
+
+            announcement.save()
+
+            return redirect(
+                'admin_announcements'
+            )
+
+    else:
+
+        form = AnnouncementForm()
 
     return render(
         request,
         'reports/admin_announcements.html',
         {
-            'announcements': announcements
+            'form': form
         }
     )
+
+
 @login_required
 def employee_announcements(request):
 
@@ -177,6 +281,8 @@ def employee_announcements(request):
             'announcements': announcements
         }
     )
+
+
 @login_required
 def notifications(request):
 
@@ -203,6 +309,8 @@ def notifications(request):
             'notifications': user_notifications
         }
     )
+
+
 @login_required
 def mark_notification_read(request, notification_id):
 
@@ -222,6 +330,7 @@ def mark_notification_read(request, notification_id):
     )
 
     notification.is_read = True
+
     notification.save()
 
     return redirect(

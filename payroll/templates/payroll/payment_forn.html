@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
+</head>
+<body>
+
+    <h1>Employee Management System</h1>
+
+    {% if payment %}
+        <h2>Edit Payment</h2>
+    {% else %}
+        <h2>Add Payment</h2>
+    {% endif %}
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            Save Payment
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{% url 'payment_list' %}">
+        <button>Back to Payments</button>
+    </a>
+
+</body>
+</html>

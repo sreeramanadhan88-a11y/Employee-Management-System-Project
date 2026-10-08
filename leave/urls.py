@@ -31,4 +31,11 @@ path(
     views.reject_leave,
     name='reject_leave'
 ),
+
+path(
+    'admin-requests/',
+    views.admin_leave_requests,
+    name='admin_leave_requests'
+),
+
 ]

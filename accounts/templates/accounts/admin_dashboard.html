@@ -1,35 +1,837 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Admin Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Control Center | EMS</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+
+        body {
+            background-color: #f3f6fa !important;
+            color: #1e293b;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            background-color: #172033 !important;
+        }
+
+        .navbar-brand {
+            color: #ffffff !important;
+        }
+
+        .navbar .nav-link {
+            color: #dbe4f0 !important;
+        }
+
+        .navbar .nav-link:hover,
+        .navbar .nav-link.active {
+            color: #ffffff !important;
+        }
+
+        /* PAGE HEADER */
+
+        .page-title {
+            color: #172033;
+        }
+
+        .admin-badge {
+            background-color: #e8eef8 !important;
+            color: #284b7a !important;
+        }
+
+        /* SECTION CARD */
+
+        .admin-section {
+            border-top: 4px solid #2563eb !important;
+        }
+
+        .section-icon {
+            color: #2563eb;
+        }
+
+        /* ADMIN AREA CARDS */
+
+        .admin-area {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0 !important;
+            transition: 0.2s ease;
+        }
+
+        .admin-area:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 .5rem 1rem rgba(23, 32, 51, 0.10) !important;
+            border-color: #cbd5e1 !important;
+        }
+
+        .admin-area h6 {
+            color: #172033;
+        }
+
+        .admin-area p {
+            color: #64748b !important;
+        }
+
+        /* ICON COLORS */
+
+        .icon-workforce {
+            color: #2563eb !important;
+        }
+
+        .icon-leave {
+            color: #d97706 !important;
+        }
+
+        .icon-finance {
+            color: #059669 !important;
+        }
+
+        .icon-insurance {
+            color: #dc2626 !important;
+        }
+
+        .icon-announcement {
+            color: #0891b2 !important;
+        }
+
+        .icon-work {
+            color: #64748b !important;
+        }
+
+        /* TOOL CARDS */
+
+        .tool-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0 !important;
+        }
+
+        .tool-card h6 {
+            color: #172033;
+        }
+
+        .tool-card p {
+            color: #64748b !important;
+        }
+
+        /* LOGIN ACTIVITY ICON */
+
+        .login-icon {
+            color: #2563eb !important;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background-color: #172033 !important;
+        }
+
+    </style>
+
 </head>
+
 <body>
 
-    <h1>Employee Management System</h1>
 
-    <h2>Admin Dashboard</h2>
+<!-- =========================
+     NAVBAR
+========================= -->
 
-    <p>Welcome, Admin.</p>
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
 
-    <a href="{% url 'add_employee' %}">
-        <button>Add Employee</button>
-    </a>
+    <div class="container-fluid px-4">
 
-    <a href="{% url 'employee_list' %}">
-        <button>View Employees</button>
-    </a>
-    <a href="{% url 'create_announcement' %}">
-    <button>Create Announcement</button>
-</a>
+        <a href="{% url 'admin_dashboard' %}"
+           class="navbar-brand fw-bold">
 
-<a href="{% url 'admin_announcements' %}">
-    <button>View Announcements</button>
-</a>
-<br>
+            <i class="bi bi-building me-2"></i>
+            EMS
 
-<a href="{% url 'logout' %}">
-    <button>Logout</button>
-</a>
+        </a>
+
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#adminNavbar">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+
+        <div class="collapse navbar-collapse"
+             id="adminNavbar">
+
+
+            <!-- MINIMAL ADMIN NAVIGATION -->
+
+            <ul class="navbar-nav me-auto">
+
+
+                <li class="nav-item">
+
+                    <a class="nav-link active"
+                       href="{% url 'admin_dashboard' %}">
+
+                        <i class="bi bi-grid-1x2 me-1"></i>
+                        Dashboard
+
+                    </a>
+
+                </li>
+
+
+                {% comment %} <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="{% url 'add_employee' %}">
+
+                        <i class="bi bi-person-plus me-1"></i>
+                        Add Employee
+
+                    </a>
+
+                </li> {% endcomment %}
+
+
+                {% comment %} <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="{% url 'admin_leave_requests' %}">
+
+                        <i class="bi bi-calendar-check me-1"></i>
+                        Leave Requests
+
+                    </a> {% endcomment %}
+
+                {% comment %} </li> {% endcomment %}
+
+
+                {% comment %} <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="{% url 'admin_announcements' %}">
+
+                        <i class="bi bi-megaphone me-1"></i>
+                        Create Announcement
+
+                    </a>
+
+                </li> {% endcomment %}
+
+
+            </ul>
+
+
+            <!-- ADMIN ACCOUNT -->
+
+            <ul class="navbar-nav">
+
+                <li class="nav-item dropdown">
+
+                    <a class="nav-link dropdown-toggle"
+                       href="#"
+                       data-bs-toggle="dropdown">
+
+                        <i class="bi bi-person-circle me-1"></i>
+                        Administrator
+
+                    </a>
+
+
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+
+                        <li>
+
+                            <span class="dropdown-item-text">
+
+                                <strong>
+                                    System Administrator
+                                </strong>
+
+                                <br>
+
+                                <small class="text-muted">
+                                    Full System Access
+                                </small>
+
+                            </span>
+
+                        </li>
+
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+
+                        <li>
+
+                            <a class="dropdown-item text-danger"
+                               href="{% url 'logout' %}">
+
+                                <i class="bi bi-box-arrow-right me-2"></i>
+                                Logout
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =========================
+     MAIN CONTENT
+========================= -->
+
+<main class="container-fluid px-4 py-4">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="row align-items-center mb-4">
+
+        <div class="col-lg-8">
+
+            <h2 class="fw-bold mb-1 page-title">
+                Administration Center
+            </h2>
+
+            <p class="text-muted mb-0">
+                Manage employees, operations, finance and
+                organizational activities from one place.
+            </p>
+
+        </div>
+
+
+        <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+
+            <span class="badge admin-badge px-3 py-2">
+
+                <i class="bi bi-shield-lock me-1"></i>
+                Administrator Access
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         ADMINISTRATION AREAS
+    ========================= -->
+
+    <div class="card border-0 shadow-sm mb-4 admin-section">
+
+
+        <div class="card-header bg-white py-3">
+
+            <h5 class="fw-bold mb-1">
+
+                <i class="bi bi-command me-2 section-icon"></i>
+                Administration Center
+
+            </h5>
+
+            <small class="text-muted">
+                Select an area to manage the organization.
+            </small>
+
+        </div>
+
+
+        <div class="card-body">
+
+
+            <div class="row g-3">
+
+
+                <!-- WORKFORCE -->
+
+                <div class="col-md-6 col-xl-4">
+
+                    <a href="{% url 'employee_list' %}"
+                       class="text-decoration-none text-dark">
+
+                        <div class="border rounded p-4 h-100 admin-area">
+
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-start">
+
+                                <div>
+
+                                    <h6 class="fw-bold">
+                                        Workforce
+                                    </h6>
+
+                                    <p class="text-muted small mb-0">
+                                        Manage employees and
+                                        organizational members.
+                                    </p>
+
+                                </div>
+
+                                <i class="bi bi-people fs-3 icon-workforce"></i>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- LEAVE -->
+
+                <div class="col-md-6 col-xl-4">
+
+                    <a href="{% url 'admin_leave_requests' %}"
+                       class="text-decoration-none text-dark">
+
+                        <div class="border rounded p-4 h-100 admin-area">
+
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-start">
+
+                                <div>
+
+                                    <h6 class="fw-bold">
+                                        Leave Control
+                                    </h6>
+
+                                    <p class="text-muted small mb-0">
+                                        Monitor employee leave
+                                        requests and status.
+                                    </p>
+
+                                </div>
+
+                                <i class="bi bi-calendar-check
+                                          fs-3 icon-leave"></i>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- FINANCE -->
+
+                <div class="col-md-6 col-xl-4">
+
+                    <a href="{% url 'admin_financial_control' %}"
+                       class="text-decoration-none text-dark">
+
+                        <div class="border rounded p-4 h-100 admin-area">
+
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-start">
+
+                                <div>
+
+                                    <h6 class="fw-bold">
+                                        Financial Control
+                                    </h6>
+
+                                    <p class="text-muted small mb-0">
+                                        Review salaries and
+                                        financial records.
+                                    </p>
+
+                                </div>
+
+                                <i class="bi bi-cash-stack
+                                          fs-3 icon-finance"></i>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- INSURANCE -->
+
+                <div class="col-md-6 col-xl-4">
+
+                    <a href="{% url 'admin_insurance_control' %}"
+                       class="text-decoration-none text-dark">
+
+                        <div class="border rounded p-4 h-100 admin-area">
+
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-start">
+
+                                <div>
+
+                                    <h6 class="fw-bold">
+                                        Insurance Control
+                                    </h6>
+
+                                    <p class="text-muted small mb-0">
+                                        Review employee insurance
+                                        claims and policies.
+                                    </p>
+
+                                </div>
+
+                                <i class="bi bi-shield-check
+                                          fs-3 icon-insurance"></i>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- ANNOUNCEMENT -->
+
+                <div class="col-md-6 col-xl-4">
+
+                    <a href="{% url 'admin_announcements' %}"
+                       class="text-decoration-none text-dark">
+
+                        <div class="border rounded p-4 h-100 admin-area">
+
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-start">
+
+                                <div>
+
+                                    <h6 class="fw-bold">
+                                        Create Announcement
+                                    </h6>
+
+                                    <p class="text-muted small mb-0">
+                                        Publish important information
+                                        for employees.
+                                    </p>
+
+                                </div>
+
+                                <i class="bi bi-megaphone
+                                          fs-3 icon-announcement"></i>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- WORK MONITORING -->
+
+                <div class="col-md-6 col-xl-4">
+
+                    <a href="{% url 'admin_work_monitoring' %}"
+                       class="text-decoration-none text-dark">
+
+                        <div class="border rounded p-4 h-100 admin-area">
+
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-start">
+
+                                <div>
+
+                                    <h6 class="fw-bold">
+                                        Work Monitoring
+                                    </h6>
+
+                                    <p class="text-muted small mb-0">
+                                        Review employee daily
+                                        work reports.
+                                    </p>
+
+                                </div>
+
+                                <i class="bi bi-clipboard-data
+                                          fs-3 icon-work"></i>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         ADMIN TOOLS
+    ========================= -->
+
+    <div class="row g-3">
+
+
+        <!-- EMPLOYEE MANAGEMENT -->
+
+        {% comment %} <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h6 class="fw-bold mb-3">
+
+                        <i class="bi bi-person-gear me-2"></i>
+                        Employee Management
+
+                    </h6>
+
+
+                    <p class="text-muted small">
+                        Add new employees or access the complete
+                        employee directory.
+                    </p>
+
+
+                    <div class="d-flex gap-2">
+
+                        <a href="{% url 'employee_list' %}"
+                           class="btn btn-primary btn-sm">
+
+                            <i class="bi bi-people me-1"></i>
+                            Directory
+
+                        </a>
+
+
+                        <a href="{% url 'add_employee' %}"
+                           class="btn btn-outline-primary btn-sm">
+
+                            <i class="bi bi-person-plus me-1"></i>
+                            Add Employee
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div> {% endcomment %}
+
+
+
+        <!-- FINANCIAL RECORDS -->
+
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm h-100 tool-card">
+
+                <div class="card-body">
+
+                    <h6 class="fw-bold mb-3">
+
+                        <i class="bi bi-bank me-2"></i>
+                        Financial Records
+
+                    </h6>
+
+
+                    <p class="text-muted small">
+                        Access payroll payments and recorded
+                        banking information.
+                    </p>
+
+
+                    <div class="d-flex gap-2 flex-wrap">
+
+                        <a href="{% url 'admin_payment_records' %}"
+                           class="btn btn-outline-success btn-sm">
+
+                            Payments
+
+                        </a>
+
+
+                        <a href="{% url 'admin_bank_records' %}"
+                           class="btn btn-outline-secondary btn-sm">
+
+                            Bank Records
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- LOGIN ACTIVITY -->
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm border-0 h-100 tool-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-start">
+
+                        <div>
+
+                            <h6 class="fw-bold mb-1">
+                                Login Activity
+                            </h6>
+
+                            <p class="text-muted small mb-3">
+                                Monitor employee login and logout activity.
+                            </p>
+
+                        </div>
+
+                        <i class="bi bi-clock-history fs-3 login-icon"></i>
+
+                    </div>
+
+                    <a
+                        href="{% url 'admin_login_activity' %}"
+                        class="btn btn-dark btn-sm"
+                    >
+                        View Activity
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ADMIN ACTION -->
+
+        {% comment %}
+
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h6 class="fw-bold mb-3">
+
+                        <i class="bi bi-megaphone me-2"></i>
+                        Administration Action
+
+                    </h6>
+
+
+                    <p class="text-muted small">
+                        Publish a new announcement for
+                        employees across the organization.
+                    </p>
+
+
+                    <a href="{% url 'admin_announcements' %}"
+                       class="btn btn-outline-info btn-sm">
+
+                        <i class="bi bi-plus-circle me-1"></i>
+                        New Announcement
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endcomment %}
+
+
+    </div>
+
+
+</main>
+
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer class="text-white text-center py-3 mt-4">
+
+    <small>
+
+        Employee Management System
+
+        <span class="mx-2">•</span>
+
+        Administration Center
+
+    </small>
+
+</footer>
+
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
 
 </body>
+
 </html>

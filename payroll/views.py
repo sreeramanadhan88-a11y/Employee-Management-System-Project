@@ -547,3 +547,195 @@ def reject_insurance_claim(request, claim_id):
     )
 
     return redirect('insurance_claim_list')
+
+@login_required
+def admin_financial_control(request):
+
+    if not request.user.is_superuser:
+        return render(
+            request,
+            'payroll/access_denied.html'
+        )
+
+    salaries = Salary.objects.all().select_related(
+        'employee'
+    )
+
+    payments = Payment.objects.all().select_related(
+        'employee',
+        'salary'
+    )
+
+    bank_statements = BankStatement.objects.all()
+
+    total_salary = sum(
+        salary.net_salary
+        for salary in salaries
+    )
+
+    total_paid = sum(
+        payment.amount
+        for payment in payments
+        if payment.payment_status == Payment.PaymentStatus.PAID
+    )
+
+    total_pending = sum(
+        payment.amount
+        for payment in payments
+        if payment.payment_status == Payment.PaymentStatus.PENDING
+    )
+
+    total_failed = sum(
+        payment.amount
+        for payment in payments
+        if payment.payment_status == Payment.PaymentStatus.FAILED
+    )
+
+    total_bank_transactions = bank_statements.count()
+
+    unreconciled_transactions = bank_statements.filter(
+        reconciled=False
+    ).count()
+
+    recent_payments = payments.order_by(
+        '-payment_date'
+    )[:5]
+
+    recent_bank_statements = bank_statements.order_by(
+        '-transaction_date'
+    )[:5]
+
+    context = {
+        'total_salary': total_salary,
+        'total_paid': total_paid,
+        'total_pending': total_pending,
+        'total_failed': total_failed,
+        'total_bank_transactions': total_bank_transactions,
+        'unreconciled_transactions': unreconciled_transactions,
+        'recent_payments': recent_payments,
+        'recent_bank_statements': recent_bank_statements,
+    }
+
+    return render(
+        request,
+        'payroll/admin_financial_control.html',
+        context
+    )
+@login_required
+def admin_payment_records(request):
+
+    if not request.user.is_superuser:
+        return render(
+            request,
+            'payroll/access_denied.html'
+        )
+
+    payments = Payment.objects.select_related(
+        'employee',
+        'salary',
+        'processed_by'
+    ).order_by(
+        '-payment_date',
+        '-created_at'
+    )
+
+    return render(
+        request,
+        'payroll/admin_payment_records.html',
+        {
+            'payments': payments
+        }
+    )
+@login_required
+def admin_bank_records(request):
+
+    if not request.user.is_superuser:
+        return render(
+            request,
+            'payroll/access_denied.html'
+        )
+
+    statements = BankStatement.objects.all().order_by(
+        '-transaction_date',
+        '-created_at'
+    )
+
+    return render(
+        request,
+        'payroll/admin_bank_records.html',
+        {
+            'statements': statements
+        }
+    )
+@login_required
+def admin_insurance_control(request):
+
+    if not request.user.is_superuser:
+        return render(
+            request,
+            'payroll/access_denied.html'
+        )
+
+    insurances = Insurance.objects.all().select_related(
+        'employee'
+    )
+
+    claims = InsuranceClaim.objects.all().select_related(
+        'employee',
+        'insurance',
+        'reviewed_by'
+    )
+
+    active_policies = insurances.filter(
+        is_active=True
+    ).count()
+
+    total_coverage = sum(
+        insurance.coverage_amount
+        for insurance in insurances
+    )
+
+    total_claims = claims.count()
+
+    pending_claims = claims.filter(
+        status=InsuranceClaim.ClaimStatus.PENDING
+    ).count()
+
+    approved_claims = claims.filter(
+        status=InsuranceClaim.ClaimStatus.APPROVED
+    ).count()
+
+    rejected_claims = claims.filter(
+        status=InsuranceClaim.ClaimStatus.REJECTED
+    ).count()
+
+    total_claim_amount = sum(
+        claim.claim_amount
+        for claim in claims
+    )
+
+    recent_claims = claims.order_by(
+        '-created_at'
+    )[:5]
+
+    recent_policies = insurances.order_by(
+        '-created_at'
+    )[:5]
+
+    context = {
+        'active_policies': active_policies,
+        'total_coverage': total_coverage,
+        'total_claims': total_claims,
+        'pending_claims': pending_claims,
+        'approved_claims': approved_claims,
+        'rejected_claims': rejected_claims,
+        'total_claim_amount': total_claim_amount,
+        'recent_claims': recent_claims,
+        'recent_policies': recent_policies,
+    }
+
+    return render(
+        request,
+        'payroll/admin_insurance_control.html',
+        context
+    )

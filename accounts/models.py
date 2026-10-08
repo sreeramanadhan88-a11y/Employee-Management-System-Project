@@ -28,15 +28,15 @@ class User(AbstractUser):
         default=Role.STAFF
     )
 
-    department=models.ForeignKey(
+    department = models.ForeignKey(
         'employees.department',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name="employees"
+        related_name='employees'
     )
 
-    manager=models.ForeignKey(
+    manager = models.ForeignKey(
         'self',
         on_delete=models.SET_NULL,
         null=True,
@@ -65,3 +65,26 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+class LoginActivity(models.Model):
+
+    employee = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='login_activities'
+    )
+
+    login_time = models.DateTimeField()
+
+    logout_time = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return f"{self.employee.username} - {self.login_time}"
